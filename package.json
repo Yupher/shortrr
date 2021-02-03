@@ -1,0 +1,12 @@
+{
+  "name": "shortrr",
+  "version": "1.0.0",
+  "description": "url shortner with nodeJS and mongodb",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "npm start --prefix server",
+    "build": "npm run build --prefix client"
+  },
+  "author": "Yupher",
+  "license": "ISC"
+}
