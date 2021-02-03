@@ -1,9 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require('cookie-parser')
 const app = express();
 
 app.use(express.json());
-
+app.use(cookieParser())
 mongoose
   .connect("mongodb://localhost:27017/shortrr", {
     useFindAndModify: false,

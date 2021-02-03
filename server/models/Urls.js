@@ -1,15 +1,11 @@
 const mongoose = require("mongoose");
-const shortid = require("shortid");
 const schema = mongoose.Schema;
 
 let urlsSchema = new schema({
   data: [
     {
       originalUrl: String,
-      shortid: {
-        type: String,
-        default: shortid.generate,
-      },
+      shortid: String,
       date: {
         type: Date,
         default: Date.now(),
@@ -18,6 +14,7 @@ let urlsSchema = new schema({
         type: Number,
         default: 0,
       },
+      shortUrl: String,
     },
   ],
 });
