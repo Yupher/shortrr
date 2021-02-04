@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Urls = require("../models/Urls");
 const validUrl = require("valid-url");
 const shortId = require("shortid");
@@ -16,7 +15,7 @@ router.get("/", async (req, res) => {
         "Set-Cookie",
         `id=${newUser.id};path=/;Expires=${new Date(
           2258713325040
-        ).toUTCString()}`
+        ).toUTCString()};httpOnly=false;hostOnly=true,sameSite=none`
       );
       return res.json(newUser);
     }
