@@ -1,27 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
+import Context from "../context/context";
+import DeleteBtn from "./DeleteBtn";
+import Link from "./Link";
+import Loading from "./Loading";
 
 const Links = () => {
-  const [urls, setUrls] = useState(null);
+  const { getUrls, urls, deleteAll, loading } = useContext(Context);
   useEffect(() => {
-    fetch("http://localhost:5000", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((json) => setUrls(json))
-      .catch((error) => console.log(error));
+    getUrls();
   }, []);
-  useEffect(()=>{
-      urls !== null ? console.log(urls): console.log('loading')
-  },[urls])
-  return (
-    <ul>
-      {urls !== null ? (
-        urls.data.map((obj) => <li key={obj._id}>{obj.shortUrl}</li>)
-      ) : (
-        <div>loding..</div>
-      )}
-    </ul>
+  return urls !== null && loading === false ? (
+    <table className="allLinks">
+      <thead className="allLinksHeader">
+        <tr>
+          <th>All Links</th>
+          <th>Original Urls</th>
+          <th>Clicks</th>
+          <th colSpan="2">
+            <DeleteBtn del={deleteAll} text="Delete All" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {urls.map((url) => (
+        <Link
+          key={url._id}
+          shortUrl={url.shortUrl}
+          shortid={url.shortid}
+          originalUrl={url.originalUrl}
+          clicks={url.clicks}
+        />
+      ))}
+      </tbody>
+    </table>
+  ) : (
+    <Fragment>
+      {urls === null && loading === false ? null : <Loading />}
+    </Fragment>
   );
 };
 

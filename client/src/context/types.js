@@ -1,0 +1,7 @@
+export const GET_URL = 'GET_URL'
+export const ADD_URL = 'ADD_URL'
+export const SET_ALERT = 'SET_ALERT'
+export const CLEAR_ALERT = 'CLEAR_ALERT'
+export const SET_LOADING = 'SET_LOADING'
+export const DELETE_URL = 'DELETE_URL'
+export const DELETE_ALL = 'DELETE_ALL'

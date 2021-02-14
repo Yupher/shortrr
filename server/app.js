@@ -27,7 +27,6 @@ mongoose
 app.use("/", require("./routes/urls"));
 
 let port = process.env.PORT || 5000;
-app.listen(port, (err) => {
-  if (err) throw err
+app.listen(port, () => {
   console.log(`server running at port ${port}....`);
 });

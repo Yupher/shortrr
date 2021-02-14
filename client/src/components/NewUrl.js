@@ -1,32 +1,31 @@
-import React, { useState } from "react";
+import React, { useState,useContext, useEffect } from "react";
+import CurrentAddedUrl from './CurrentAddedUrl'
+import Alert from './Alert'
+import Loading from './Loading'
+import Context from '../context/context'
 
 const NewUrl = () => {
-  const [url, setUrl] = useState("");
-  const addUrl = async (url) => {
-    let data= {
-      url,
-    }; 
-    let res = await fetch("http://localhost:5000", {
-      method: "post",
-      body: JSON.stringify(data),
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-   /*  let response = await res.json()
-    console.log(response) */
-  };
+  const [newUrl, setNewUrl] = useState("");
+  const context = useContext(Context)
+  const {addUrl,loading, currentAddedUrl, allert, clearAlert} = context
+
+  useEffect(()=>{
+    if(allert !== null){
+      setTimeout(()=>{clearAlert()}, 3000)
+    }
+  })
   const onSubmit = (e) => {
     e.preventDefault();
-    addUrl(url);
+    //console.log(allert)
+    addUrl(newUrl);
   };
   const onChange = (e) => {
-    setUrl(e.target.value);
+    setNewUrl(e.target.value);
   };
   return (
     <div style={{ marginTop: "2.5rem" }}>
-      <small style={{ marginLeft: "10%" }}>
+      {allert !== null ? <Alert alert={allert.message}/>: null }
+      <small className='note'>
         URLs must be in this format: https://www.exemple.com
       </small>
       <div className="newUrl">
@@ -34,7 +33,7 @@ const NewUrl = () => {
           <input
             type="text"
             name="url"
-            value={url}
+            value={newUrl}
             placeholder="Paste Your Url Here"
             onChange={onChange}
             className="input"
@@ -42,6 +41,7 @@ const NewUrl = () => {
           <input type="submit" className="btn" value="Shrink" />
         </form>
       </div>
+      {currentAddedUrl !== null && loading === false ? <CurrentAddedUrl url={currentAddedUrl} /> : <div>{loading ? <Loading /> : null}</div> }
     </div>
   );
 };

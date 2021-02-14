@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
         "Set-Cookie",
         `id=${newUser.id};path=/;Expires=${new Date(
           2258713325040
-        ).toUTCString()};httpOnly=false;hostOnly=true,sameSite=none`
+        ).toUTCString()};httpOnly=false;hostOnly=true,sameSite=none;secure=false`
       );
       return res.json(newUser);
     }
@@ -31,20 +31,21 @@ router.post("/", async (req, res) => {
   let { id } = req.cookies;
 
   if (!url || !validUrl.isUri(url)) {
-    return res.status(404).json({ message: "please enter a valide URL" });
+    return res.status(401).json({ message: "please enter a valide URL" });
   }
   try {
     let user = await Urls.findById(id);
     let shortid = shortId.generate();
+    let shortUrl = `${req.get('host')}/${shortid}`
 
-    user.data.push({
+    user.data.unshift({
       originalUrl: url,
       shortid,
-      shortUrl: `${req.protocol}://${req.hostname}/${shortid}`,
+      shortUrl
     });
 
     await user.save();
-    res.json(user);
+    res.json({shortUrl});
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something wrong with the server" });
